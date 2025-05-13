@@ -1,115 +1,110 @@
-import { useEffect, useState } from 'react';
-import DocRaw from '../DocRaw.png';
-import { SquarePen } from 'lucide-react';
-import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
-import { AddDoctor, DoctorPicUPdate, GetAllDoctors } from '../api/api.js';
+import { useEffect, useState } from "react";
+import DocRaw from "../DocRaw.png";
+import { SquarePen } from "lucide-react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { AddDoctor, DoctorPicUPdate, GetAllDoctors } from "../api/api.js";
 
 const AddNewDoc = () => {
+  const queryClient = useQueryClient();
 
-  const queryClient = useQueryClient()
+  const [name, setName] = useState("");
+  const [age, setAge] = useState("");
+  const [degree, setDegree] = useState("");
+  const [profileImage, setProfileImage] = useState("");
 
-  const [name, setName] = useState('')
-  const [age, setAge] = useState('')
-  const [degree, setDegree] = useState('')
-  const [profileImage, setProfileImage] = useState('')
+  const [isScreenOpen, setIsScreenOpen] = useState(false);
+  const [selectedDoctorId, setSelectedDoctorId] = useState();
+  const [newProfileImage, setNewProfileImage] = useState("");
 
-  const [isScreenOpen, setIsScreenOpen] = useState(false)
-  const [selectedDoctorId, setSelectedDoctorId] = useState()
-  const [newProfileImage, setNewProfileImage] = useState('');
-
-  const {data:doctors,success,isLoading,error} = useQuery({
-    queryKey:['get-all-docs'],
-    queryFn:GetAllDoctors
-  })
+  const {
+    data: doctors,
+    success,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["get-all-docs"],
+    queryFn: GetAllDoctors,
+  });
 
   const mutation = useMutation({
-    mutationFn:AddDoctor,
-    onSuccess:() => {
+    mutationFn: AddDoctor,
+    onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey:['get-all-docs']
-      })
-      setName('')
-      setAge('')
-      setDegree('')
-      setProfileImage('')
-    }
-  })
+        queryKey: ["get-all-docs"],
+      });
+      setName("");
+      setAge("");
+      setDegree("");
+      setProfileImage("");
+    },
+  });
 
-  const handleAddNewDoc = async(e) => {
+  const handleAddNewDoc = async (e) => {
     e.preventDefault();
     if (!name || !age || degree === "Select Degree" || !profileImage) {
       console.log("Please provide valid information!");
-      return
+      return;
     }
-    const formData = new FormData() 
-    formData.append('name', name)
-    formData.append('age', age)
-    formData.append('degree', degree)
-    formData.append('profileImage', profileImage)
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("age", age);
+    formData.append("degree", degree);
+    formData.append("profileImage", profileImage);
 
-    mutation.mutate(formData)
+    mutation.mutate(formData);
   };
 
   const handleFileChange = (e) => {
-    const file = e.target.files[0]
+    const file = e.target.files[0];
     if (file) {
-      setProfileImage(file)
+      setProfileImage(file);
     }
   };
 
   const handleNewFileChange = (e) => {
-    const file = e.target.files[0]
+    const file = e.target.files[0];
     if (file) {
-      setNewProfileImage(file)
+      setNewProfileImage(file);
     }
-  }
+  };
 
   const updateImageMutation = useMutation({
-  mutationFn: DoctorPicUPdate,
-  onSuccess: () => {
-    queryClient.invalidateQueries({ queryKey: ['get-all-docs'] })
-    setIsScreenOpen(false)
-    setNewProfileImage(null)
-  },
-  onError: (error) => {
-    console.error("Failed to update image !", error.message);
-  }
-  })
+    mutationFn: DoctorPicUPdate,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["get-all-docs"] });
+      setIsScreenOpen(false);
+      setNewProfileImage(null);
+    },
+    onError: (error) => {
+      console.error("Failed to update image !", error.message);
+    },
+  });
 
   const handleUpdateProfile = async () => {
-    if (!newProfileImage || !selectedDoctorId) return
-    const formData = new FormData()
-    formData.append('profileImage', newProfileImage)
-    updateImageMutation.mutate({ id: selectedDoctorId, profileImage: formData })
-    setIsScreenOpen(false)
-    setSelectedDoctorId()
-  }
+    if (!newProfileImage || !selectedDoctorId) return;
+    const formData = new FormData();
+    formData.append("profileImage", newProfileImage);
+    updateImageMutation.mutate({
+      id: selectedDoctorId,
+      profileImage: formData,
+    });
+    setIsScreenOpen(false);
+    setSelectedDoctorId();
+  };
 
-  const handleDoctor = (id)=> {
-    if (!id) return
-    setSelectedDoctorId(id)
-    setIsScreenOpen(true)
-  }
-  // const openScreen = (doctorId) => {
-  //   const screenInterval = setInterval(()=>{
-  //     if(selectedDoctorId !== null){
-  //       setIsScreenOpen(true)
-  //     }
-  //     setSelectedDoctorId()
-  //     if(updateImageMutation.isSuccess){
-  //       clearInterval(screenInterval)
-  //       setIsScreenOpen(false)
-  //     }
-  //   },1000)
-  // }
-
-  useEffect(()=>{
-    if(updateImageMutation.isSuccess){
-      setIsScreenOpen(false)
-      setSelectedDoctorId(null)
-      setNewProfileImage(null)
+  const handleDoctor = (id) => {
+    if (!id) return;
+    setSelectedDoctorId(id);
+    setIsScreenOpen(true);
+  };
+  
+  useEffect(() => {
+    if (updateImageMutation.isSuccess) {
+      setIsScreenOpen(false);
+      setSelectedDoctorId(null);
+      setNewProfileImage(null);
     }
-  },[updateImageMutation.isSuccess])
+  }, [updateImageMutation.isSuccess]);
 
   return (
     <div className="flex select-none">

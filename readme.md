@@ -1,146 +1,75 @@
-# Bed Allocation System
+# Tan Stack Bed Allocation
 
-The **Bed Allocation System** is a full-stack web application designed to streamline hospital bed allocation and management. It provides features for managing patients, doctors, and room availability, ensuring efficient operations in a healthcare facility.
+## Overview
+The Tan Stack Bed Allocation project is a comprehensive system designed to manage hospital bed allocation efficiently. It provides functionalities for admitting patients, managing doctors, and tracking room availability. The system is built with a modern tech stack, including a backend powered by Node.js and Express, and a frontend developed using React and Vite. Tailwind CSS is used for styling, ensuring a responsive and visually appealing user interface.
 
----
-
-## Features
+## Project Structure
 
 ### Backend
-- **Patient Management**:
-  - Admit new patients.
-  - Discharge patients.
-  - Fetch lists of admitted, discharged, and all patients.
-- **Doctor Management**:
-  - Add new doctors.
-  - Update doctor profile pictures.
-  - Fetch a list of all doctors.
-- **Bed Management**:
-  - Fetch available beds by room.
-  - Automatically allocate and free beds during patient admission and discharge.
-- **Database**:
-  - MongoDB is used to store data for patients, doctors, and rooms.
+The backend is responsible for handling the core logic and database interactions. It includes the following key components:
+- **Controllers**: Handle the business logic for beds, doctors, and patients.
+- **Models**: Define the database schema for doctors, patients, and rooms.
+- **Routes**: Define API endpoints for interacting with the system.
+- **Middlewares**: Include utilities like file upload handling (e.g., Multer).
+- **Config**: Configuration files, such as Cloudinary for image uploads.
 
 ### Frontend
-- **Dashboard**:
-  - Displays an overview of available beds, admitted patients, and discharged patients.
-- **Patient Management**:
-  - Admit new patients with room and bed selection.
-  - View lists of admitted, discharged, and all patients.
-- **Doctor Management**:
-  - Add new doctors.
-  - View a list of all doctors.
-- **Responsive Design**:
-  - Built with Tailwind CSS for a modern and responsive UI.
-- **Data Visualization**:
-  - Uses DataTables for interactive patient lists.
+The frontend provides a user-friendly interface for interacting with the system. It includes:
+- **Pages**: Different views like Dashboard, Admit Patient, and Patient Lists.
+- **Components**: Reusable UI components like Navbar and Horizontal Cards.
+- **Hooks**: Custom hooks for API interactions.
+- **API**: Centralized API handling for the frontend.
 
----
+### Doc_Raw
+This folder contains raw document images used in the system.
+
+## Workflow
+
+1. **Doctor Management**:
+   - Doctors can be added and managed through the backend API.
+   - The `Doctor.js` model defines the schema for doctor data.
+
+2. **Patient Admission**:
+   - Patients are admitted using the `AdmitPatient.jsx` page on the frontend.
+   - The backend processes the admission request and allocates a bed if available.
+
+3. **Bed Allocation**:
+   - The `bedController.js` handles the logic for assigning beds to patients.
+   - Room availability is tracked using the `Room.js` model.
+
+4. **Patient Tracking**:
+   - Admitted patients can be viewed on the `AdmittedPatientList.jsx` page.
+   - Discharged patients are listed on the `DischargedPatients.jsx` page.
+
+5. **Document Management**:
+   - Documents are uploaded and managed using the `docController.js` and `multer.js` middleware.
+   - Raw document images are stored in the `Doc_Raw` folder.
+
+6. **Dashboard**:
+   - The `Dashboard.jsx` page provides an overview of the system, including statistics on patients and bed availability.
 
 ## Tech Stack
-
-### Backend
-- **Framework**: Node.js with Express.js
-- **Database**: MongoDB
-- **ORM**: Mongoose
-- **Dependencies**:
-  - `express`, `mongoose`, `cors`, `cloudinary`, `multer`, `mongoose-paginate-v2`
-
-### Frontend
-- **Framework**: React.js
-- **Query Optimization**: Tan Stack Query
-- **Styling**: Tailwind CSS
-- **Data Fetching**: Axios
-- **Dependencies**:
-  - `react-router-dom`, `datatables.net`, `lucide-react`
-
----
-
-## Folder Structure
-
-### Backend
-Located in the `backend` folder:
-- **`models/`**: Contains Mongoose schemas for `Patient`, `Doctor`, and `Room`.
-- **`routes/`**: Defines API routes for patients, doctors, and beds.
-- **`controller/`**: Contains logic for handling API requests.
-- **`middlewares/`**: Middleware for file uploads using Multer.
-- **`config/`**: Configuration for Cloudinary.
-- **`index.js`**: Entry point for the backend server.
-
-### Frontend
-Located in the `frontend` folder:
-- **`src/pages/`**: Contains React components for different pages (e.g., Dashboard, Admit Patient, etc.).
-- **`src/redux/`**: Redux slices for managing state.
-- **`src/components/`**: Reusable UI components (e.g., Navbar, HorizontalCard).
-- **`src/hooks/`**: Custom hooks for API calls.
-- **`src/app/`**: Redux store configuration.
-- **`public/`**: Static assets like images.
-
----
+- **Backend**: Node.js, Express
+- **Frontend**: React, Vite, Tailwind CSS
+- **Database**: MongoDB (assumed based on models)
+- **Other Tools**: Cloudinary for image uploads, Multer for file handling
 
 ## How to Run
 
-### Prerequisites
-- Node.js and npm installed.
-- MongoDB database connection string.
-
 ### Backend
-1. Navigate to the `backend` folder:
-   ```bash
-   cd backend
-   ```
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Start the server:
-   ```bash
-   npm run dev
-   ```
-4. The backend will run on `http://localhost:5000`.
+1. Navigate to the `backend` folder.
+2. Install dependencies: `npm install`
+3. Start the server: `npm start`
 
 ### Frontend
-1. Navigate to the `frontend` folder:
-   ```bash
-   cd frontend
-   ```
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Start the development server:
-   ```bash
-   npm run dev
-   ```
-4. The frontend will run on `http://localhost:5173`.
-
----
-
-## API Documentation
-
-For detailed information about the backend API endpoints, refer to the [Backend API Documentation](./backend/readme.md).
-
----
-
-## Screenshots
-
-### Dashboard
-Displays an overview of available beds, admitted patients, and discharged patients.
-
-### Admit Patient
-Form to admit a new patient with room and bed selection.
-
-### Doctor Management
-Add new doctors and view the list of existing doctors.
-
----
+1. Navigate to the `frontend` folder.
+2. Install dependencies: `npm install`
+3. Start the development server: `npm run dev`
 
 ## Future Enhancements
-- Add authentication and role-based access control.
-- Implement advanced analytics for patient and bed usage trends.
-- Add notifications for bed availability and patient discharge.
+- Add authentication and authorization.
+- Implement advanced analytics and reporting.
+- Enhance the UI/UX for better usability.
 
----
-
-## License
-This project is licensed under the MIT License.
+## Contributing
+Contributions are welcome! Please fork the repository and submit a pull request with your changes.
