@@ -48,7 +48,7 @@ The **Bed Allocation System** is a full-stack web application designed to stream
 
 ### Frontend
 - **Framework**: React.js
-- **State Management**: Redux Toolkit
+- **Query Optimization**: Tan Stack Query
 - **Styling**: Tailwind CSS
 - **Data Fetching**: Axios
 - **Dependencies**:
